@@ -47,7 +47,7 @@ public class Main {
         while (resultSet.next()) {
             String minionName = resultSet.getString("name");
             int minionAge = resultSet.getInt("age");
-            System.out.printf("%d. %s %s%n", number, minionName, minionAge);
+            System.out.printf("%d. %s %d%n", number, minionName, minionAge);
             number++;
         }
 
