@@ -20,10 +20,10 @@ public class Main {
 
         ResultSet resultSet = statement.executeQuery();
 
-        if (resultSet.next()) {
+        while (resultSet.next()) {
             String villainName = resultSet.getString("name");
             String minionsCount = resultSet.getString("count_of_minions");
-            System.out.printf("%s %s", villainName, minionsCount);
+            System.out.printf("%s %s%n", villainName, minionsCount);
         }
 
         connection.close();
