@@ -40,12 +40,12 @@ public class Main {
         int minionId = resultSetGetMinionId.getInt("id");
 
         PreparedStatement statementInsertMinionVillains = connection.prepareStatement(
-                "INSERT INTO `minions` (`minion_id`, `villain_id` ) VALUES (?, ?);");
+                "INSERT INTO `minions_villains` (`minion_id`, `villain_id` ) VALUES (?, ?);");
 
-        statementInsertMinion.setInt(1, minionId);
-        statementInsertMinion.setInt(1, villainId);
+        statementInsertMinionVillains.setInt(1, minionId);
+        statementInsertMinionVillains.setInt(2, villainId);
 
-        statementInsertMinion.executeUpdate();
+        statementInsertMinionVillains.executeUpdate();
 
         System.out.printf("Successfully added %s to be minion of %s.%n", minionName, nameOfVillain);
 
@@ -60,7 +60,6 @@ public class Main {
 
         ResultSet resultSetFindTown = statementFindTown.executeQuery();
 
-        int townId;
         if (resultSetFindTown.next()) {
             return resultSetFindTown.getInt("id");
         }
