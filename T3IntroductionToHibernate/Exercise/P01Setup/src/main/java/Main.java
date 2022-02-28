@@ -6,5 +6,8 @@ public class Main {
     public static void main(String[] args) {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("PU_Name");
         EntityManager entityManager = factory.createEntityManager();
+
+        entityManager.close();
+        factory.close();
     }
 }
