@@ -3,7 +3,6 @@ import entities.Town;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.util.List;
 
 public class Main {
@@ -12,9 +11,9 @@ public class Main {
         EntityManager entityManager = factory.createEntityManager();
 
         entityManager.getTransaction().begin();
-        Query queryTowns = entityManager.createQuery("SELECT t FROM Town t", Town.class);
+        List<Town> resultList = entityManager.createQuery("SELECT t FROM Town t", Town.class)
+                .getResultList();
 
-        List<Town> resultList = queryTowns.getResultList();
 
         for (Town town : resultList) {
             String townName = town.getName();
