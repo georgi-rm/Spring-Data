@@ -1,6 +1,4 @@
-import entities.Employee;
 import entities.Project;
-import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,7 +15,7 @@ public class Main {
         entityManager.getTransaction().begin();
 
         List<Project> projects = entityManager.createQuery("SELECT p FROM Project AS p" +
-                        " order by p.startDate DESC, p.name ASC", Project.class)
+                        " ORDER BY p.startDate DESC, p.name ASC", Project.class)
                 .setMaxResults(10)
                 .getResultList();
 
@@ -27,7 +25,7 @@ public class Main {
             System.out.printf("Project name: %s%n", project.getName());
             System.out.printf(" \tProject Description: %s%n", project.getDescription());
 
-            DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.0");
+            DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.0");
 
             System.out.printf(" \tProject Start Date:%s%n",
                     project.getStartDate().format(customFormatter));
