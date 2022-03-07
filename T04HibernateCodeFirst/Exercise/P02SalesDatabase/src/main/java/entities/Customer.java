@@ -2,7 +2,6 @@ package entities;
 
 import javax.persistence.*;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class Customer {
     private String creditCardNumber;
 
     @OneToMany(targetEntity = Sale.class, mappedBy = "customer", fetch = FetchType.LAZY)
-    Set<Sale> sales;
+    private Set<Sale> sales;
 
     public Customer() {
         this.sales = new LinkedHashSet<>();

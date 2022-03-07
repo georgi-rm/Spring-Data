@@ -17,7 +17,7 @@ public class StoreLocation {
     private String locationName;
 
     @OneToMany(targetEntity = Sale.class, mappedBy = "storeLocation", fetch = FetchType.LAZY)
-    Set<Sale> sales;
+    private Set<Sale> sales;
 
     public StoreLocation() {
         this.sales = new LinkedHashSet<>();
