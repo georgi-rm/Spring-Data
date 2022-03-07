@@ -47,4 +47,12 @@ public class Diagnose {
     public void setComment(Comment comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Diagnose{" +
+                "name='" + name + '\'' +
+                ", comment=" + comment +
+                '}';
+    }
 }

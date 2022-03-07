@@ -48,4 +48,12 @@ public class Visitation {
     public void setComment(Comment comment) {
         this.comment = comment;
     }
+
+    @Override
+    public String toString() {
+        return "Visitation{" +
+                "date=" + date +
+                ", comment=" + comment +
+                '}';
+    }
 }

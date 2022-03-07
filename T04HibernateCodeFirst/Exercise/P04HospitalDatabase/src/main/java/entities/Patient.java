@@ -105,4 +105,17 @@ public class Patient {
     public void setHasInsurance(boolean hasInsurance) {
         this.hasInsurance = hasInsurance;
     }
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", picture='" + picture + '\'' +
+                ", hasInsurance=" + hasInsurance +
+                '}';
+    }
 }

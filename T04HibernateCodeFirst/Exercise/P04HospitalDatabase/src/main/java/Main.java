@@ -13,47 +13,115 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        String input = enterCommand(scanner);
+        String input = enterReadAddCommand(scanner);
 
         while (!input.equals("End")) {
 
             switch (input) {
-                case "Patient":
-                    Patient patient = enterPatientData(scanner);
-                    entityManager.getTransaction().begin();
-                    entityManager.persist(patient);
-                    entityManager.getTransaction().commit();
+                case "Add":
+                    addRecords(entityManager, scanner);
                     break;
-                case "Visitation":
-                    Visitation visitation = enterVisitationData(scanner);
-                    entityManager.getTransaction().begin();
-                    entityManager.persist(visitation.getComment());
-                    entityManager.persist(visitation);
-                    entityManager.getTransaction().commit();
-                    break;
-                case "Diagnose":
-                    Diagnose diagnose = enterDiagnoseData(scanner);
-                    entityManager.getTransaction().begin();
-                    entityManager.persist(diagnose.getComment());
-                    entityManager.persist(diagnose);
-                    entityManager.getTransaction().commit();
-                    break;
-                case "Prescription":
-                    Medicament medicament = enterMedicamentData(scanner);
-                    entityManager.getTransaction().begin();
-                    entityManager.persist(medicament);
-                    entityManager.getTransaction().commit();
+                case "Read":
+                    readRecords(entityManager, scanner);
                     break;
                 default:
                     System.out.println("Invalid command: " + input);
                     break;
             }
 
-            input = enterCommand(scanner);
+            input = enterReadAddCommand(scanner);
         }
 
         entityManager.close();
         factory.close();
+    }
+
+    private static void readRecords(EntityManager entityManager, Scanner scanner) {
+        String input = enterCommand(scanner);
+
+        System.out.println("Enter Record id:");
+        Long id = Long.parseLong(scanner.nextLine());
+
+        switch (input) {
+            case "Patient":
+                entityManager.getTransaction().begin();
+                Patient patient = entityManager.createQuery("SELECT p FROM Patient AS p" +
+                                " WHERE p.id = :patientId", Patient.class)
+                        .setParameter("patientId", id)
+                        .getSingleResult();
+
+                System.out.println(patient);
+                entityManager.getTransaction().commit();
+                break;
+            case "Visitation":
+                entityManager.getTransaction().begin();
+                Visitation visitation = entityManager.createQuery("SELECT v FROM Visitation AS v" +
+                                " WHERE v.id = :visitationId", Visitation.class)
+                        .setParameter("visitationId", id)
+                        .getSingleResult();
+
+                System.out.println(visitation);
+                entityManager.getTransaction().commit();
+                break;
+            case "Diagnose":
+                entityManager.getTransaction().begin();
+                Diagnose diagnose = entityManager.createQuery("SELECT d FROM Diagnose AS d" +
+                                " WHERE d.id = :diagnoseId", Diagnose.class)
+                        .setParameter("diagnoseId", id)
+                        .getSingleResult();
+
+                System.out.println(diagnose);
+                entityManager.getTransaction().commit();
+                break;
+            case "Prescription":
+                entityManager.getTransaction().begin();
+                Medicament medicament = entityManager.createQuery("SELECT m FROM Medicament AS m" +
+                                " WHERE m.id = :medicamentId", Medicament.class)
+                        .setParameter("medicamentId", id)
+                        .getSingleResult();
+
+                System.out.println(medicament);
+                entityManager.getTransaction().commit();
+                break;
+            default:
+                System.out.println("Invalid type: " + input);
+                break;
+        }
+    }
+
+    private static void addRecords(EntityManager entityManager, Scanner scanner) {
+        String input = enterCommand(scanner);
+        switch (input) {
+            case "Patient":
+                Patient patient = enterPatientData(scanner);
+                entityManager.getTransaction().begin();
+                entityManager.persist(patient);
+                entityManager.getTransaction().commit();
+                break;
+            case "Visitation":
+                Visitation visitation = enterVisitationData(scanner);
+                entityManager.getTransaction().begin();
+                entityManager.persist(visitation.getComment());
+                entityManager.persist(visitation);
+                entityManager.getTransaction().commit();
+                break;
+            case "Diagnose":
+                Diagnose diagnose = enterDiagnoseData(scanner);
+                entityManager.getTransaction().begin();
+                entityManager.persist(diagnose.getComment());
+                entityManager.persist(diagnose);
+                entityManager.getTransaction().commit();
+                break;
+            case "Prescription":
+                Medicament medicament = enterMedicamentData(scanner);
+                entityManager.getTransaction().begin();
+                entityManager.persist(medicament);
+                entityManager.getTransaction().commit();
+                break;
+            default:
+                System.out.println("Invalid type: " + input);
+                break;
+        }
     }
 
     private static Patient enterPatientData(Scanner scanner) {
@@ -109,8 +177,13 @@ public class Main {
         return new Medicament(name);
     }
 
+    private static String enterReadAddCommand(Scanner scanner) {
+        System.out.println("Enter command (Read, Add, End):");
+        return scanner.nextLine();
+    }
+
     private static String enterCommand(Scanner scanner) {
-        System.out.println("Enter command (Patient, Visitation, Diagnose, Prescription, End):");
+        System.out.println("Enter type (Patient, Visitation, Diagnose, Prescription):");
         return scanner.nextLine();
     }
 }
