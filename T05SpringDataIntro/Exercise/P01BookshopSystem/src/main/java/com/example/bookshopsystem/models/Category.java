@@ -13,9 +13,6 @@ public class Category {
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(targetEntity = Book.class, mappedBy = "categories")
-    private Set<Book> books;
-
     public Category() {
     }
 
@@ -38,4 +35,5 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
+
 }

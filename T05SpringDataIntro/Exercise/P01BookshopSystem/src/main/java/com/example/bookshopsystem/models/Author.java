@@ -1,6 +1,8 @@
 package com.example.bookshopsystem.models;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 @Entity(name = "authors")
@@ -16,8 +18,8 @@ public class Author {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @OneToMany(targetEntity = Book.class, mappedBy = "author")
-    private Set<Book> bookSet;
+    @OneToMany(targetEntity = Book.class, mappedBy = "author", fetch = FetchType.EAGER)
+    private Set<Book> books;
 
     public Author() {
     }
@@ -49,5 +51,13 @@ public class Author {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<Book> getBooks() {
+        return Collections.unmodifiableSet(books);
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
 }

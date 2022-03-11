@@ -9,6 +9,7 @@ import com.example.bookshopsystem.repositories.AuthorRepository;
 import com.example.bookshopsystem.repositories.BookRepository;
 import com.example.bookshopsystem.repositories.CategoryRepository;
 import com.example.bookshopsystem.services.AuthorService;
+import com.example.bookshopsystem.services.BookService;
 import com.example.bookshopsystem.services.CategoryService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,13 +33,15 @@ public class ConsoleRunner implements CommandLineRunner {
     private static final String AUTHORS_FILE_NAME = "authors.txt";
     private static final String CATEGORIES_FILE_NAME = "categories.txt";
 
+    BookService bookService;
     AuthorService authorService;
     CategoryService categoryService;
     BookRepository bookRepository;
     AuthorRepository authorRepository;
     CategoryRepository categoryRepository;
 
-    public ConsoleRunner(AuthorService authorService, CategoryService categoryService, BookRepository bookRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository) {
+    public ConsoleRunner(BookService bookService, AuthorService authorService, CategoryService categoryService, BookRepository bookRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository) {
+        this.bookService = bookService;
         this.authorService = authorService;
         this.categoryService = categoryService;
         this.bookRepository = bookRepository;
@@ -49,6 +53,36 @@ public class ConsoleRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         seedDatabase();
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("Enter query number(1-4) or End:");
+        String input = scanner.nextLine();
+        while (!input.equals("End")) {
+            switch (input) {
+                case "1":
+                    bookService.getAllBooksAfterYear2000().stream()
+                            .map(Book::getTitle)
+                            .forEach(System.out::println);
+                    break;
+                case "2":
+                    authorService.getAuthorWithBookReleasedBefore1990()
+                            .forEach(a -> System.out.printf("%s %s%n", a.getFirstName(), a.getLastName()));
+                    break;
+                case "3":
+                    authorService.getAllAuthorsOrderedByCountOfTheirBooks()
+                            .forEach(a -> System.out.printf("%s %s - %d books%n", a.getFirstName(), a.getLastName(), a.getBooks().size()));
+                    break;
+                case "4":
+                    Author author = authorService.getAuthorGeorgePowell();
+                    bookService.getAllBookFromAuthorOrderedByDateAndTitle(author)
+                            .forEach(b -> System.out.printf("%s %s - %d copies%n", b.getTitle(), b.getReleaseDate().toString(), b.getCopies()));
+                    break;
+            }
+            System.out.println();
+            System.out.println("Enter query number(1-4) or End:");
+            input = scanner.nextLine();
+        }
     }
 
     void seedDatabase() throws IOException {
@@ -99,7 +133,9 @@ public class ConsoleRunner implements CommandLineRunner {
                             .skip(5)
                             .collect(Collectors.joining(" "));
                     Set<Category> categories = categoryService.getRandomCategories();
-
+                    for (Category category : categories) {
+                        System.out.printf("%s -> %d%n", category.toString(), category.hashCode());
+                    }
                     Book book = new Book(title, editionType, price, releaseDate,
                             ageRestriction, author, categories, copies);
 

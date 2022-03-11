@@ -26,11 +26,16 @@ public class CategoryServiceImpl implements CategoryService {
 
         long numberOfCategories = random.nextLong(countOfAllCategories) + 1;
 
-        Set<Category> randomCategories = new HashSet<>();
+        Set<Long> idSet = new HashSet<>();
 
         for (int i = 0; i < numberOfCategories; i++) {
             Long randomCategoryId = random.nextLong(countOfAllCategories) + 1;
-            Optional<Category> category = this.categoryRepository.findById(randomCategoryId);
+            idSet.add(randomCategoryId);
+        }
+
+        Set<Category> randomCategories = new HashSet<>();
+        for (Long id : idSet) {
+            Optional<Category> category = this.categoryRepository.findById(id);
             category.ifPresent(randomCategories::add);
         }
 

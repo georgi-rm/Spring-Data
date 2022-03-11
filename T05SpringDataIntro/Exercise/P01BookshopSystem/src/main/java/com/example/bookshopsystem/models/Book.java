@@ -22,7 +22,7 @@ public class Book {
     @Column(length = 1000)
     private String description;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "edition_type", nullable = false)
     private EditionType editionType;
 
@@ -35,7 +35,7 @@ public class Book {
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "age_restriction", nullable = false)
     private AgeRestriction ageRestriction;
 
