@@ -8,9 +8,8 @@ import java.math.BigDecimal;
 public interface AccountService {
     void createAccount(Account account);
 
-    @Transactional
+
     void withdrawMoney(BigDecimal money, Long id);
 
-    @Transactional
     void transferMoney(BigDecimal money, Long id);
 }

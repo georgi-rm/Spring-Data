@@ -5,6 +5,7 @@ import com.example.accountsystem.models.User;
 import com.example.accountsystem.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -28,6 +29,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void withdrawMoney(BigDecimal money, Long id) {
         Account account = repository.findAccountById(id);
 
@@ -47,6 +49,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void transferMoney(BigDecimal money, Long id) {
         Account account = repository.findAccountById(id);
 
